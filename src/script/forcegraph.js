@@ -1,16 +1,16 @@
 function forcegraph() {
     var svg = d3.select("#forcegraph").select("svg"),
-        width = 960,
-        height = 600;
+        width = 1000,
+        height = 1000;
     svg.attrs({width: width, height: height});
     var graph = {nodes: [], links: []};
     datalinkcalculate();
     var color = d3.scaleOrdinal(d3.schemeCategory10);
-
+    var thickscale = d3.scaleLinear().domain(d3.extent(graph.links,d=>d.value)).range([1,5]);
     var simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function (d) {
             return d.id;
-        }))
+        }).distance(500).strength(0.1))
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -19,9 +19,11 @@ function forcegraph() {
             .selectAll("line")
             .data(graph.links)
             .enter().append("line")
-            .attr("stroke-width", function (d) {
-                return Math.sqrt(d.value);
-            });
+            .style("stroke-width", function (d) {
+                return thickscale(d.value);
+            })
+            .style("stroke","black")
+            .style("stroke-opacity",0.2);
 
         var node = svg.append("g")
             .attr("class", "nodes")
@@ -97,7 +99,7 @@ function forcegraph() {
     }
 
     function datalinkcalculate() {
-            var numcut = 100;
+            var numcut = 50;
         var listfeq = d3.nest()
             .key(function (d) {
                 return d.term;
@@ -114,26 +116,43 @@ function forcegraph() {
                 return d.title;
             })
             .rollup(function (words) {
-                return {targets: data.find(f => f.title === words[0].title).keywords.filter(f=>currentcut.find(e=>e==f.term)!==undefined).map(f => f.term)}
+                return {targets: data.find(f => f.title === words[0].title).keywords.map(f => f.term)}
             })
-            .entries(termscollection_org).filter(d=>d.value.targets.length!=0);
+            .entries(termscollection_org.filter(d=>currentcut.find(t=>t.key===d.term)!==undefined));
 
         nested_pair.forEach(d=>{
             var items = d.value.targets;
             for (var i = 0;i<(items.length-1);i++){
                 for (var j = i+1;j<items.length;j++){
-                    var link = {"source": items[i], "target": items[j], "value": 1};
-                    var slink = graph.links.find(l=>((l.source===link.source&&l.target===link.target)||(l.source===link.target&&l.target===link.source)));
-                    if (slink!== undefined)
-                        graph.links[graph.links.indexOf(slink)].value ++;
-                    else
-                        graph.links.push(link);
+                    if ((currentcut.find(t=> t.key==items[i] )!==undefined)&&(currentcut.find(t=>t.key==items[j])!==undefined)) {
+                        var link = {"source": items[i], "target": items[j], "value": 1};
+                        var slink = graph.links.find(l => ((l.source === link.source && l.target === link.target) || (l.source === link.target && l.target === link.source)));
+                        if (slink !== undefined)
+                            graph.links[graph.links.indexOf(slink)].value++;
+                        else
+                            graph.links.push(link);
+                    }
                 }
             }
         });
-        graph.nodes = d3.map(termscollection_org,d=>d.term).keys().map(d => {
-            return {id: d, group: 1}
+        // graph.nodes = currentcut.map(d => {
+        //     return {id: d, group: 1}
+        // });
+        graph.links.forEach(d=>{
+            if (graph.nodes.length ==0){
+                graph.nodes.push({id: d.source,group:1});
+                graph.nodes.push({id: d.target,group:1});
+            }else {
+
+                var item1 = graph.nodes.find(t => t.id == d.source);
+                var item2 = graph.nodes.find(t => t.id == d.target);
+                if (item1 == undefined)
+                    graph.nodes.push({id: d.source, group: 1});
+                if (item2 == undefined)
+                    graph.nodes.push({id: d.target, group: 1});
+            }
         });
+
 
     }
 }

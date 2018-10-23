@@ -63,15 +63,15 @@ var wordTip = d3.tip()
         str += "</div>"
         str += "<table>";
         str += "<tr>";
-        str += '<th >Source(s)</th>';
-        str += '<th >Title</th>';
+        str += '<th >Detail</th>';
+        // str += '<th >Title</th>';
         str + "</tr>";
 
         (d.data||d.value.data).forEach(t => {
             var ar = (t.source==undefined)?ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title):t;
             str += "<tr>";
-            str += "<td>" + ar.source + "</td>";
-            str += "<td class=pct>" + ar.title + "</td>";
+            str += "<td>" + ar.body + "</td>";
+            // str += "<td class=pct>" + ar.title + "</td>";
             str + "</tr>";
         });
 
@@ -560,7 +560,7 @@ function ready (error, dataf){
     data.sort((a,b)=> a.time-b.time);
     data = data.filter(d=> d.time> parseTime('Dec 27 2017'));
     termscollection_org = blacklist(data);
-    //forcegraph();
+    forcegraph();
     autocomplete(document.getElementById("theWord"), d3.map(termscollection_org, function(d){return d.term;}).keys());
     // document.getElementById("theWord").autocompleter({ source: data });
     render();
