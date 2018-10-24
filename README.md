@@ -1,1 +1,1 @@
-# IoTWordCluster
+# IoTNegViz
