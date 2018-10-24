@@ -2,11 +2,8 @@
 var sidenav;
 let self = null;
 var categoriesgroup ={
-    "NUMBER": ["MONEY","PERCENT"],
-    "PRODUCT":["PRODUCT","EVENT"],
-    "PERSON":["PERSON"],
-    "ORG":["ORG"],
-    "NATION":["GPE"]};
+    "acident": ["Accident"],
+    "risk": ["Risk"]};
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 var categories=[];
 var outputFormat = d3.timeFormat('%b %d %Y');
@@ -115,7 +112,7 @@ $(document).ready(function () {
     spinner = new Spinner(opts);
     spinner.spin(document.body);
     d3.queue()
-        .defer(d3.json,"src/data/dataout.json")
+        .defer(d3.json,"src/data/dataIoT.json")
         .await(ready);
     d3.select("#IsWeekly").on("click",()=> {
         mainconfig.IsWeekly = !mainconfig.IsWeekly;
@@ -431,143 +428,143 @@ function wordCloud(selector,config) {
         mainGroup.selectAll('.stext').style("fill", function (d, i) {
 
         });
-        mainGroup.selectAll('.stext').on('click', function(d){
+        // mainGroup.selectAll('.stext').on('click', function(d){
+        //
+        //     var thisText = d3.select(this);
+        //     var text = thisText.text();
+        //     var topic = thisText.attr('topic');
+        //     var allTexts = mainGroup.selectAll('.stext').filter(t =>{
+        //         var sameTerm = t && t.text === text &&  t.topic === topic;
+        //         var sameArticle = false;
+        //         t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title==tt.title)!=undefined)));
+        //         return sameTerm || sameArticle;
+        //     });
+        //     // d3.selectAll(".article")
+        //     //     .filter(a=>  allTexts._groups[0].find(d=> outputFormat(d.__data__.data[0].time)==a.key) != undefined)
+        //     //     .style("fill","#ffc62a")
+        //     //     .style("filter","url(#glow)");
+        //     //Select the data for the stream layers
+        //     var streamLayer = d3.select("path[topic='"+ topic+"']" ).datum();
+        //     //Push all points
+        //     var points = Array();
+        //
+        //     streamLayer.forEach((elm,i) => {
+        //         var item = elm.data.words[topic].filter(f=>f.text==text)[0];
+        //         if (item == undefined)
+        //             item =[];
+        //         else
+        //             item = item.data.map(t=>ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title))
+        //         points.push({
+        //             x: elm.x,
+        //             y: boxwidth/3*item.length,
+        //             data: item,
+        //             n:0,
+        //         });
+        //     });
+        //     allTexts._groups[0].forEach(t => {
+        //         let data = t.__data__;
+        //         let fontSize = data.fontSize;
+        //         let thePoint = points[data.timeStep+1];//+1 since we added 1 to the first point and 1 to the last point.
+        //         let delta = 0;
+        //         if (data.text !== text)
+        //             delta = thePoint.n;
+        //         points[data.timeStep+1].n = points[data.timeStep+1].n  + (fontSize+5);
+        //         //Set it to visible.
+        //         //Clone the nodes.
+        //         let clonedNode = t.cloneNode(true);
+        //         d3.select(clonedNode).attrs({
+        //             visibility: "visible",
+        //             stroke: 'none',
+        //             'stroke-size': 0,
+        //         });
+        //         let clonedParentNode = t.parentNode.cloneNode(false);
+        //         clonedParentNode.appendChild(clonedNode);
+        //
+        //         t.parentNode.parentNode.appendChild(clonedParentNode);
+        //         var cloner = d3.select(clonedParentNode).attrs({
+        //             cloned: true,
+        //             topic: topic
+        //         });
+        //         cloner.transition().duration(1000).attrs({
+        //             transform: function(){return 'translate('+thePoint.x+','+(thePoint.y+height/2+delta+fontSize/2)+')';},
+        //         });
+        //     });
+        //
+        //
+        //     // points[0].y = points[1].y;//First point
+        //     // points[points.length-1].y = points[points.length-2].y;//Last point
+        //     var wimg = wordStreamG
+        //         .append('g')
+        //         .attr('class','stackg')
+        //         .attr('transform','translate(0,'+height/2+')')
+        //         .selectAll('.stackimgg')
+        //         .data(points.slice(1, points.length-1))
+        //         .enter()
+        //         .append('g')
+        //         .attr('class','stackimgg')
+        //         .attr('transform',d=>'translate('+d.x+',0)');
+        //     // var max = 0;
+        //     // var min = 0;
+        //     var img = wimg.selectAll('.stackimg')
+        //         .data(d => d.data)
+        //         .enter()
+        //         .append('a')
+        //         .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+        //         .attrs({"xlink:href": (d => d.url||d.link),
+        //             'target':"_blank"})
+        //         .attr('class','stackimg')
+        //         .append('rect')
+        //         //.attr('class','stackimg')
+        //         // .attr('d', area)
+        //         //.style('fill', prevColor)
+        //         .attr("fill",d => "url(#"+d.time+")")
+        //         .attr('y',(d,i)=>{
+        //             var y = i*boxwidth*2/3;
+        //             // max = max< y? y:max;
+        //             // min = min> y? y:min;
+        //             return y;})
+        //         .attrs({
+        //             'fill-opacity': 1,
+        //             topic: topic,
+        //             wordStream: true,
+        //             x: 0,
+        //             width: boxwidth,
+        //             height: boxwidth*2/3
+        //
+        //         });
+        //     // .attr('xlink:href',d=>d.url);
+        //
+        //     wimg.transition().duration(600)
+        //         .attr('transform', (d, i)=> 'translate('+d.x+',-'+d.data.length*boxwidth*2/3/2+')');
+        //     wordStreamG.select('.stackg');
+        //     //Hide all other texts
+        //     var allOtherTexts = mainGroup.selectAll('.stext').filter(t =>{
+        //         return t && !t.cloned ;
+        //     });
+        //     allOtherTexts.attr('visibility', 'hidden');
+        //     mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
+        //     d3.select('.sublegend').attr('visibility', 'hidden');
+        // });
 
-            var thisText = d3.select(this);
-            var text = thisText.text();
-            var topic = thisText.attr('topic');
-            var allTexts = mainGroup.selectAll('.stext').filter(t =>{
-                var sameTerm = t && t.text === text &&  t.topic === topic;
-                var sameArticle = false;
-                t.data.forEach(tt=>(sameArticle = sameArticle || (d.data.find(e=>e.title==tt.title)!=undefined)));
-                return sameTerm || sameArticle;
-            });
-            // d3.selectAll(".article")
-            //     .filter(a=>  allTexts._groups[0].find(d=> outputFormat(d.__data__.data[0].time)==a.key) != undefined)
-            //     .style("fill","#ffc62a")
-            //     .style("filter","url(#glow)");
-            //Select the data for the stream layers
-            var streamLayer = d3.select("path[topic='"+ topic+"']" ).datum();
-            //Push all points
-            var points = Array();
-
-            streamLayer.forEach((elm,i) => {
-                var item = elm.data.words[topic].filter(f=>f.text==text)[0];
-                if (item == undefined)
-                    item =[];
-                else
-                    item = item.data.map(t=>ArticleDay.filter(f=> f.key == outputFormat(t.time))[0].value.data.find(f=> f.title == t.title))
-                points.push({
-                    x: elm.x,
-                    y: boxwidth/3*item.length,
-                    data: item,
-                    n:0,
-                });
-            });
-            allTexts._groups[0].forEach(t => {
-                let data = t.__data__;
-                let fontSize = data.fontSize;
-                let thePoint = points[data.timeStep+1];//+1 since we added 1 to the first point and 1 to the last point.
-                let delta = 0;
-                if (data.text !== text)
-                    delta = thePoint.n;
-                points[data.timeStep+1].n = points[data.timeStep+1].n  + (fontSize+5);
-                //Set it to visible.
-                //Clone the nodes.
-                let clonedNode = t.cloneNode(true);
-                d3.select(clonedNode).attrs({
-                    visibility: "visible",
-                    stroke: 'none',
-                    'stroke-size': 0,
-                });
-                let clonedParentNode = t.parentNode.cloneNode(false);
-                clonedParentNode.appendChild(clonedNode);
-
-                t.parentNode.parentNode.appendChild(clonedParentNode);
-                var cloner = d3.select(clonedParentNode).attrs({
-                    cloned: true,
-                    topic: topic
-                });
-                cloner.transition().duration(1000).attrs({
-                    transform: function(){return 'translate('+thePoint.x+','+(thePoint.y+height/2+delta+fontSize/2)+')';},
-                });
-            });
-
-
-            // points[0].y = points[1].y;//First point
-            // points[points.length-1].y = points[points.length-2].y;//Last point
-            var wimg = wordStreamG
-                .append('g')
-                .attr('class','stackg')
-                .attr('transform','translate(0,'+height/2+')')
-                .selectAll('.stackimgg')
-                .data(points.slice(1, points.length-1))
-                .enter()
-                    .append('g')
-                    .attr('class','stackimgg')
-                    .attr('transform',d=>'translate('+d.x+',0)');
-            // var max = 0;
-            // var min = 0;
-            var img = wimg.selectAll('.stackimg')
-                .data(d => d.data)
-                    .enter()
-                .append('a')
-                .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-                .attrs({"xlink:href": (d => d.url||d.link),
-                    'target':"_blank"})
-                .attr('class','stackimg')
-                    .append('rect')
-                    //.attr('class','stackimg')
-                    // .attr('d', area)
-                    //.style('fill', prevColor)
-                    .attr("fill",d => "url(#"+d.time+")")
-                    .attr('y',(d,i)=>{
-                        var y = i*boxwidth*2/3;
-                        // max = max< y? y:max;
-                        // min = min> y? y:min;
-                        return y;})
-                    .attrs({
-                        'fill-opacity': 1,
-                        topic: topic,
-                        wordStream: true,
-                        x: 0,
-                        width: boxwidth,
-                        height: boxwidth*2/3
-
-                    });
-                // .attr('xlink:href',d=>d.url);
-
-            wimg.transition().duration(600)
-                .attr('transform', (d, i)=> 'translate('+d.x+',-'+d.data.length*boxwidth*2/3/2+')');
-            wordStreamG.select('.stackg');
-            //Hide all other texts
-            var allOtherTexts = mainGroup.selectAll('.stext').filter(t =>{
-                return t && !t.cloned ;
-            });
-            allOtherTexts.attr('visibility', 'hidden');
-            mainGroup.selectAll('.stokepath').attr('visibility', 'hidden');
-            d3.select('.sublegend').attr('visibility', 'hidden');
-        });
-
-        overclick.on('click',()=>{
-            d3.select('.sublegend').attr('visibility', 'visible');
-            mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
-            wordStreamG.selectAll('.stackg').remove();
-            mainGroup.selectAll('.stext').filter(t=>{
-                return t && !t.cloned && t.placed;
-            }).attrs({
-                visibility: 'visible'
-            });
-            //Remove the cloned element
-            document.querySelectorAll("g[cloned='true']").forEach(node=>{
-                node.parentNode.removeChild(node);
-            });
-            //Remove the added path for it
-            document.querySelectorAll("path[wordStream='true']").forEach(node=>{
-                node.parentNode.removeChild(node);
-            });
-
-        });
+        // overclick.on('click',()=>{
+        //     d3.select('.sublegend').attr('visibility', 'visible');
+        //     mainGroup.selectAll('.stokepath').attr('visibility', 'visible');
+        //     wordStreamG.selectAll('.stackg').remove();
+        //     mainGroup.selectAll('.stext').filter(t=>{
+        //         return t && !t.cloned && t.placed;
+        //     }).attrs({
+        //         visibility: 'visible'
+        //     });
+        //     //Remove the cloned element
+        //     document.querySelectorAll("g[cloned='true']").forEach(node=>{
+        //         node.parentNode.removeChild(node);
+        //     });
+        //     //Remove the added path for it
+        //     document.querySelectorAll("path[wordStream='true']").forEach(node=>{
+        //         node.parentNode.removeChild(node);
+        //     });
+        //
+        // });
 
         // topics.forEach(topic=>{
         //     d3.select("path[topic='"+ topic+"']" ).on('click', function(){
@@ -599,17 +596,17 @@ function wordCloud(selector,config) {
     }
 }
 function ready (error, dataf){
-    //spinner = new Spinner(opts).spin(document.getElementById('timelinewImg'));
     if (error) throw error;
     data = dataf;
+    console.log("twitter: "+data.length);
     // format the data
     //data =data.filter(d=>d.source=="reuters");
     data.forEach(function(d) {
-        if(d.source !== "reuters")
-            d.time = parseTime(d.time);
+            d.time = parseInt(d.time);
     });
     data.sort((a,b)=> a.time-b.time);
-    data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
+
+    data = data.filter(d=> d.time> parseTime('Dec 27 2017'));
     termscollection_org = blacklist(data);
     forcegraph("#slide-out","#autocomplete-input");
     var listjson = {};
@@ -625,7 +622,7 @@ function ready (error, dataf){
         // do calculations
         // update graph
         // clear spinner
-    render();
+        render();
     }, 0);
 }
 
@@ -914,7 +911,7 @@ function handledata(data){
             }
         });
         return {'date': d.key,
-         'words': words};});
+            'words': words};});
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
     console.log(startDate +" - "+endDate);
@@ -965,7 +962,7 @@ function blacklist(data){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw =["cnbc","CNBC","U.S.","reuters","Reuters","CNBC.com","EU","U.S","’s"];
+    var blackw =["iot","risk","globalcityforum2018"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
@@ -974,11 +971,11 @@ function blacklist(data){
             //categories.forEach(c=> key = key || ((w.category==c)&&(blackw.find(d=>d==w.term)== undefined)));
             key = key || ((blackw.find(d=>d===w.term)== undefined)) && categoriesmap[w.category]!= undefined ;
             return key;}).forEach( w => {
-                w.maincategory = w.category;
-                w.category = categoriesmap[w.category]||w.category;
-                var e = w;
-                e.time = d.time;
-                e.title = d.title;
+            w.maincategory = w.category;
+            w.category = categoriesmap[w.category]||w.category;
+            var e = w;
+            e.time = d.time;
+            e.title = d.title;
             termscollection_org.push(w)});
     });
     console.log("#org terms: " +numterm);
