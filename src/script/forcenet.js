@@ -8,6 +8,10 @@ function forcegraph(selector,searchbox) {
     var svg2 = svg2main.append('g')
         .attr("class", "focus")
     .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+    var guide = svg2.append("g").attr("transform","translate(10,20)");
+    guide.append("svg:text")
+        .append("svg:tspan").style("font-weight","bold").text("Dynamic Network:").attr("fill","black")
+        .append("svg:tspan").style("font-weight","normal").text(" Drag - Drop - Zoom for more detail.").attr("fill","black");
     var rect = svg2.append("rect")
         .attr("width", width)
         .attr("height", height)

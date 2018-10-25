@@ -197,13 +197,31 @@ nav ul li.active {
   background-color: #3d8edd;
 }
 h1 {
-
   text-align: center;
   display: block;
   font-size: 2.3em;
   margin: 0.67em 0;
   font-weight: bold;
 }
+h3 {
+    font-size: 1.5em;
+}
+h4 {
+    font-size: 1.3em;
+}
+.ip {
+    /*display: block;*/
+    font-size: 1.1em;
+
+}
+ul.o {
+    list-style-type: circle;
+}
+.usecase {
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
 #searchbtn {
   color: white;
 }
@@ -214,6 +232,7 @@ h1 {
 
 #autocomplete-input {
   color: #ededed;
+    width: 300px;
 }
 
 #autocomplete-input:focus {
