@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>IoTnegViz</title>
+    <title>IoTNegViz</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="src/style/main.css">
@@ -27,10 +27,11 @@
     <script src="src/script/main3.js"></script>
 </head>
 <body>
+<h1>IoTNegViz: An interactive tool for visualizing negative aspects of IoT </h1>
 <div class="navbar-fixed">
     <nav id ="navbar">
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo center">FinanViz</a>
+
             <!--<div autocomplete="off" action="none" id="searchdiv">-->
                 <!--<div class="autocomplete">-->
                     <!--<input id="theWord" type="text" name="theWord" autofocus placeholder="words">-->
@@ -41,15 +42,20 @@
             <!--</div>-->
             <div class="left hide-on-med-and-down row valign-wrapper">
                 <div class="input-field col">
-                    <input type="text" id="autocomplete-input" class="autocomplete col" placeholder="Key words ....">
+                    <input type="text" id="autocomplete-input" class="autocomplete col" placeholder="Search...">
                 </div>
                 <i class="small material-icons right btn-small btn-flat" id="searchbtn" onclick="searchWord()">search</i></a>
             </div>
             <!--<a class="btn" onclick="searchWord()">-->
                 <!--<i class="material-icons">search</i>-->
             <!--</a>-->
+            <ul class="brand-logo center" >
+                <li><a href="usecases.html">Use cases</a></li>
+                <li><a href="index.html">Demo</a></li>
+            </ul>
 
             <ul class="right hide-on-med-and-down valign-wrapper" id="toogle">
+                <li style="font-size: 17px">Display in:</li>
                 <li id="IsWeekly" disabled><a>Weekly</a></li>
                 <li id="IsSeperate" disabled><a>Stack</a></li>
             </ul>
